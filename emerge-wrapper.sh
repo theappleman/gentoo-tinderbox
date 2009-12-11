@@ -11,9 +11,7 @@ emerge -1Du --keep-going --selective=n "$1" < /dev/null
 
 res=$?
 
-if [[ $res == 0 ]]; then
-    echo "$1 merge #succeded" | bti
-else
+if [[ $res != 0 ]]; then
     if ! fgrep -q ">>> emerge" /var/log/emerge.log; then
 	echo "$1 merge #rejected" | bti
     fi

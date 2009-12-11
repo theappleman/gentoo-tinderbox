@@ -8,6 +8,11 @@ pre_pkg_setup() {
     tweet_me "${CATEGORY}/${PF} merge starting"
 
     register_die_hook tinderbox_mask_pkg
+    register_success_hook tinderbox_success
+}
+
+tinderbox_success() {
+    tweet_me "${CATEGORY}/${PF} merge #succeded"
 }
 
 tinderbox_mask_pkg() {
