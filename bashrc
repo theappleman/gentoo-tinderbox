@@ -21,11 +21,11 @@ tinderbox_mask_pkg() {
     SANDBOX_ON=0 sed -i -e "\$a =${CATEGORY}/${PF}" /etc/portage/package.mask/currentrun
 }
 
-flameeyes_warning_if_file() {
-    if [[ -s "${T}"/$1 ]]; then
-	ewarn "Flameeyes QA Warning! $2"
-	cat "${T}"/$1
-	ewarn "Flameeyes QA Warning (end)! $2"
+flameeyes_if_file() {
+    if [[ -s "${T}"/$2 ]]; then
+	ewarn "Flameeyes QA $2! $3"
+	cat "${T}"/$2
+	ewarn "Flameeyes QA $2 (end)! $3"
     fi
 }
 
@@ -40,13 +40,13 @@ post_src_install() {
     for symbol in adler32 BZ2_decompress jpeg_mem_init XML_Parse avcodec_init png_get_libpng_ver lt_dlopen GC_stdout; do
 	scanelf -qRs +$symbol "${D}" >> "${T}"/flameeyes-scanelf-bundled.log
     done
-    flameeyes_warning_if_file flameeyes-scanelf-bundled.log "Possibly bundled libraries"
+    flameeyes_if_file Warning flameeyes-scanelf-bundled.log "Possibly bundled libraries"
 
     rm -f "${T}"/flameeyes-scanelf-insecure.log
     for symbol in tmpnam tmpnam_r tempnam gets sigstack getpw getwd mktemp; do
 	scanelf -qRs -$symbol "${D}" >> "${T}"/flameeyes-scanelf-insecure.log
     done
-    flameeyes_warning_if_file flameeyes-scanelf-insecure.log "Insecure functions used"
+    flameeyes_if_file Notice flameeyes-scanelf-insecure.log "Insecure functions used"
 
     find "${D}" \
 	\( -name '._*' -fprintf "${T}"/flameeyes-osx-forkfile.log "%P\n" \) , \
@@ -75,12 +75,12 @@ post_src_install() {
 	scanelf -R "${D}" > "${T}"/flameeyes-elfs-bincheck.log
     fi
 
-    flameeyes_warning_if_file flameeyes-invalid-directory.log "Invalid directories in image"
-    flameeyes_warning_if_file flameeyes-osx-forkfile.log "OSX fork files found (._*)"
-    flameeyes_warning_if_file flameeyes-setXid-binaries.log "setXid files found"
-    flameeyes_warning_if_file flameeyes-share-elfs.log "ELF files in /usr/share"
-    flameeyes_warning_if_file flameeyes-elfs-bincheck.log "ELF files in a binchecks-restricted package"
-    flameeyes_warning_if_file flameeyes-pointless-la.log "Pointless libtool .la files found"
+    flameeyes_if_file Warning flameeyes-invalid-directory.log "Invalid directories in image"
+    flameeyes_if_file Warning flameeyes-osx-forkfile.log "OSX fork files found (._*)"
+    flameeyes_if_file Warning flameeyes-share-elfs.log "ELF files in /usr/share"
+    flameeyes_if_file Warning flameeyes-elfs-bincheck.log "ELF files in a binchecks-restricted package"
+    flameeyes_if_file Warning flameeyes-pointless-la.log "Pointless libtool .la files found"
+    flameeyes_if_file Notice flameeyes-setXid-binaries.log "setXid files found"
 
     lafilefixer "${D}"
 }
