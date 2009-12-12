@@ -30,18 +30,18 @@ tinderbox_if_file() {
 }
 
 post_src_install() {
+    rm -f "${T}"/tinderbox-*.log
+
     # scanelf -q -F "#s%F" -R -s '-__(|l|f)xstat' "${D}" > "${T}"/tinderbox-scanelf-stat64.log
     # if [[ -s "${T}"/tinderbox-scanelf-stat64.log ]]; then
     # 	ewarn "Tinderbox QA Warning! Missing largefile support"
     # 	cat "${T}"/tinderbox-scanelf-stat64.log >/dev/stderr
     # fi
 
-    rm -f "${T}"/tinderbox-scanelf-bundled.log
     for symbol in adler32 BZ2_decompress jpeg_mem_init XML_Parse avcodec_init png_get_libpng_ver lt_dlopen GC_stdout; do
 	scanelf -qRs +$symbol "${D}" >> "${T}"/tinderbox-scanelf-bundled.log
     done
 
-    rm -f "${T}"/tinderbox-scanelf-insecure.log
     for symbol in tmpnam tmpnam_r tempnam gets sigstack getpw getwd mktemp; do
 	scanelf -qRs -$symbol "${D}" >> "${T}"/tinderbox-scanelf-insecure.log
     done
