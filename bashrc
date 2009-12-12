@@ -59,7 +59,11 @@ post_src_install() {
 	\( -path "${D}"usr/share/doc/\* -type d -prune -not \( -name "${PF}" -or -name 'KDE4' -or -name 'HTML' \) \
 	   -fprintf "${T}"/flameeyes-invalid-directory.log "/%P\n" \) ,  \
 	\( -path "${D}"usr/share/locale/\* -name '*.mo' \
-	   -fprintf "${T}"/flameeyes-locales.log "/%P\n" \)
+	   -fprintf "${T}"/flameeyes-locales.log "/%P\n" \) , \
+	\( \( -path "${D}"/usr/lib\*/python\*/site-packages/\* -or \
+	      -path "${D}"/usr/lib\*/ruby/site-ruby/\* -or \
+	      -path "${D}"/usr/lib\*/perl5/\* \) -name '*.la' \
+	      -fprintf "${T}"/flameeyes-pointless-la.log "/%P\n" \)
 
     if [[ -d "${D}"/usr/share/locale ]] && ! [[ -s "${T}"/flameeyes-locales.log ]]; then
 	eqawarn "No locales installed (bug #264114)"
@@ -76,6 +80,7 @@ post_src_install() {
     flameeyes_warning_if_file flameeyes-setXid-binaries.log "setXid files found"
     flameeyes_warning_if_file flameeyes-share-elfs.log "ELF files in /usr/share"
     flameeyes_warning_if_file flameeyes-elfs-bincheck.log "ELF files in a binchecks-restricted package"
+    flameeyes_warning_if_file flameeyes-pointless-la.log "Pointless libtool .la files found"
 
     lafilefixer "${D}"
 }
