@@ -23,9 +23,9 @@ tinderbox_mask_pkg() {
 
 flameeyes_if_file() {
     if [[ -s "${T}"/$2 ]]; then
-	ewarn "Flameeyes QA $2! $3"
+	ewarn "Flameeyes QA $1! $3"
 	cat "${T}"/$2
-	ewarn "Flameeyes QA $2 (end)! $3"
+	ewarn "Flameeyes QA $1 (end)! $3"
     fi
 }
 
