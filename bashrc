@@ -40,13 +40,17 @@ post_src_install() {
     for symbol in adler32 BZ2_decompress jpeg_mem_init XML_Parse avcodec_init png_get_libpng_ver lt_dlopen GC_stdout; do
 	scanelf -qRs +$symbol "${D}" >> "${T}"/tinderbox-scanelf-bundled.log
     done
-    tinderbox_if_file Warning tinderbox-scanelf-bundled.log "Possibly bundled libraries"
 
     rm -f "${T}"/tinderbox-scanelf-insecure.log
     for symbol in tmpnam tmpnam_r tempnam gets sigstack getpw getwd mktemp; do
 	scanelf -qRs -$symbol "${D}" >> "${T}"/tinderbox-scanelf-insecure.log
     done
-    tinderbox_if_file Notice tinderbox-scanelf-insecure.log "Insecure functions used"
+
+    scanelf -R "${D}"/usr/share > "${T}"/tinderbox-share-elfs.log
+
+    if has binchecks ${RESTRICT}; then
+	scanelf -R "${D}" > "${T}"/tinderbox-elfs-bincheck.log
+    fi
 
     find "${D}" \
 	\( -name '._*' -fprintf "${T}"/tinderbox-osx-forkfile.log "%P\n" \) , \
@@ -69,17 +73,14 @@ post_src_install() {
 	eqawarn "Tinderbox QA Warning: No locales installed (bug #264114)"
     fi
 
-    scanelf -R "${D}"/usr/share > "${T}"/tinderbox-share-elfs.log
-
-    if has binchecks ${RESTRICT}; then
-	scanelf -R "${D}" > "${T}"/tinderbox-elfs-bincheck.log
-    fi
-
+    tinderbox_if_file Warning tinderbox-scanelf-bundled.log "Possibly bundled libraries"
     tinderbox_if_file Warning tinderbox-invalid-directory.log "Invalid directories in image"
     tinderbox_if_file Warning tinderbox-osx-forkfile.log "OSX fork files found (._*)"
     tinderbox_if_file Warning tinderbox-share-elfs.log "ELF files in /usr/share"
     tinderbox_if_file Warning tinderbox-elfs-bincheck.log "ELF files in a binchecks-restricted package"
     tinderbox_if_file Warning tinderbox-pointless-la.log "Pointless libtool .la files found"
+
+    tinderbox_if_file Notice tinderbox-scanelf-insecure.log "Insecure functions used"
     tinderbox_if_file Notice tinderbox-setXid-binaries.log "setXid files found"
 
     lafilefixer "${D}"
