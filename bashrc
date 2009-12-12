@@ -23,9 +23,9 @@ tinderbox_mask_pkg() {
 
 tinderbox_if_file() {
     if [[ -s "${T}"/$2 ]]; then
-	ewarn "Tinderbox QA $1! $3"
+	eqawarn "Tinderbox QA $1! $3"
 	cat "${T}"/$2
-	ewarn "Tinderbox QA $1 (end)! $3"
+	eqawarn "Tinderbox QA $1 (end)! $3"
     fi
 }
 
@@ -66,7 +66,7 @@ post_src_install() {
 	      -fprintf "${T}"/tinderbox-pointless-la.log "/%P\n" \)
 
     if [[ -d "${D}"/usr/share/locale ]] && ! [[ -s "${T}"/tinderbox-locales.log ]]; then
-	eqawarn "No locales installed (bug #264114)"
+	eqawarn "Tinderbox QA Warning: No locales installed (bug #264114)"
     fi
 
     scanelf -R "${D}"/usr/share > "${T}"/tinderbox-share-elfs.log
@@ -89,7 +89,7 @@ make() {
     if [[ "${FUNCNAME[1]}" == "einstall" ]] ; then
 	emake -j1 "$@"
     else
-        eqawarn "/etc/portage/bashrc QA notice: 'make' called by ${FUNCNAME[1]}"
+        eqawarn "Tinderbox QA Notice: 'make' called by ${FUNCNAME[1]}"
         emake "$@"
     fi
 }
