@@ -11,13 +11,23 @@ pre_pkg_setup() {
     register_success_hook tinderbox_success
 }
 
+tinderbox_stats() {
+    if fgrep -q 'Called src_test' "${PORTAGE_LOG_FILE}"; then
+	echo " tests failed"
+    fi
+
+    if fgrep -q 'Detected file collision' "${PORTAGE_LOG_FILE}"; then
+	echo " #collisions"
+    fi
+}
+
 tinderbox_success() {
-    tweet_me "${CATEGORY}/${PF} merge #succeded"
+    tweet_me "${CATEGORY}/${PF} merge #succeded$(tinderbox_stats)"
 }
 
 tinderbox_mask_pkg() {
     [[ ${EBUILD_PHASE} == test ]] && return 0
-    tweet_me "${CATEGORY}/${PF} merge #failed"
+    tweet_me "${CATEGORY}/${PF} merge #failed$(tinderbox_stats)"
     SANDBOX_ON=0 sed -i -e "\$a =${CATEGORY}/${PF}" /etc/portage/package.mask/currentrun
 }
 
