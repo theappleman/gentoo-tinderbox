@@ -76,7 +76,8 @@ post_src_install() {
 	   -fprintf "${T}"/tinderbox-locales.log "/%P\n" \) , \
 	\( \( -path "${D}"/usr/lib\*/python\*/site-packages/\* -or \
 	      -path "${D}"/usr/lib\*/ruby/site-ruby/\* -or \
-	      -path "${D}"/usr/lib\*/perl5/\* \) -name '*.la' \
+	      -path "${D}"/usr/lib\*/perl5/\* -or \
+	      -path "${D}"/lib\*/security/\* \) -name '*.la' \
 	      -fprintf "${T}"/tinderbox-pointless-la.log "/%P\n" \)
 
     if [[ -d "${D}"/usr/share/locale ]] && ! [[ -s "${T}"/tinderbox-locales.log ]]; then
