@@ -17,19 +17,31 @@ echo > /etc/portage/package.mask/currentrun
 
 reset_emergelog
 
-emerge -1 --selective gcc
+emerge -u1 portage
+
+emerge -u1 gcc
 if fgrep -q '>>> emerge' /var/log/emerge.log; then
     ./update-gcc-asneeded.sh
 fi
 
 reset_emergelog
 
-emerge -1 --selective ghc haskell-updater
-if fgrep -q '>>> emerge' /var/log/emerge.log; then
-    echo "running #haskell-updater"
+if emerge -u1 ghc haskell-updater &&
+    fgrep -q '>>> emerge' /var/log/emerge.log; then
+
+    echo "running #haskell-updater" | bti
     /usr/sbin/haskell-updater --upgrade
 fi
 
-emerge -1 --selective glibc portage bti screen avahi nfs-utils gentoolkit java-dep-check portage-utils
+reset_emergelog
+
+if emerge -u1 dev-lang/ocaml &&
+    fgrep -q '>>> emerge' /var/log/emerge.log; then
+
+    echo "running #ocaml-rebuild" | bti
+    /usr/sbin/ocaml-rebuild.sh -f
+fi
+
+emerge -u1 glibc bti screen avahi nfs-utils gentoolkit java-dep-check portage-utils
 
 reset_emergelog
