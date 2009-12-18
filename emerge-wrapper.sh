@@ -1,7 +1,6 @@
 #!/bin/bash
 
 if [[ -f /var/log/emerge.log ]]; then
-    sed -i -e '$r /var/log/emerge.log' /var/log/emerge-total.log
     rm -f /var/log/emerge.log
 fi
 
@@ -17,5 +16,4 @@ if [[ $res != 0 ]]; then
     fi
 fi
 
-sed -i -e '$r /var/log/emerge.log' /var/log/emerge-total.log
 rm -f /var/log/emerge.log

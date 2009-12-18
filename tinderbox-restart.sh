@@ -1,7 +1,6 @@
 #!/bin/sh
 
 reset_emergelog() {
-    sed -i -e '$r /var/log/emerge.log' /var/log/emerge-total.log
     rm -f /var/log/emerge.log
 }
 
