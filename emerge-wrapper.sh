@@ -6,7 +6,7 @@ fi
 
 echo "$1 queued" | bti
 
-emerge -1Du --keep-going --selective=n "$1" < /dev/null
+emerge --nospinner -1Du --keep-going --selective=n "$1" < /dev/null
 
 res=$?
 
