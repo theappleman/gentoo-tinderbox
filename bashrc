@@ -66,12 +66,17 @@ post_src_install() {
 	\( -name '._*' -fprintf "${T}"/tinderbox-osx-forkfile.log "%P\n" \) , \
 	\( -perm /6000 -fprintf "${T}"/tinderbox-setXid-binaries.log "%#m %u:%g %P\n" \) , \
 	\( \( -path "${D}"usr/man/\* -or -path "${D}"usr/info/\* -or \
-	-path "${D}"usr/X11R6/\* -or -path "${D}"usr/doc/\* -or \
-	-path "${D}"usr/locale/\* -or -path "${D}"usr/lib/perl5/site_perl/\* -or \
-	-path "${D}"usr/local/\* \
-	\) -fprintf "${T}"/tinderbox-invalid-directory.log "/%P\n" \) , \
-	\( -path "${D}"usr/share/doc/\* -type d -prune -not \( -name "${PF}" -or -name 'KDE4' -or -name 'HTML' \) \
-	   -fprintf "${T}"/tinderbox-invalid-directory.log "/%P\n" \) ,  \
+	      -path "${D}"usr/X11R6/\* -or \
+	      -path "${D}"usr/locale/\* -or \
+	      -path "${D}"usr/local/\* \
+	   \) -fprintf "${T}"/tinderbox-invalid-directory.log "/%P\n" \) , \
+	\( -path "${D}"usr/lib/perl5/site_perl/\* \
+	   -fprintf "${T}"/tinderbox-site-perl.log "/%P\n" \) , \
+	\( -path "${D}"usr/doc/\* -or \
+	   \( -path "${D}"usr/share/doc/\* -type d \
+              -prune -not \( -name "${PF}" -or -name 'KDE4' -or -name 'HTML' \) \
+           \) \
+	   -fprintf "${T}"/tinderbox-misplaced-doc.log "/%P\n" \) ,  \
 	\( -path "${D}"usr/share/locale/\* -name '*.mo' \
 	   -fprintf "${T}"/tinderbox-locales.log "/%P\n" \) , \
 	\( \( -path "${D}"/usr/lib\*/python\*/site-packages/\* -or \
@@ -90,6 +95,8 @@ post_src_install() {
     tinderbox_if_file Warning tinderbox-share-elfs.log "ELF files in /usr/share"
     tinderbox_if_file Warning tinderbox-elfs-bincheck.log "ELF files in a binchecks-restricted package"
     tinderbox_if_file Warning tinderbox-pointless-la.log "Pointless libtool .la files found"
+    tinderbox_if_file Warning tinderbox-site-perl.log "Perl files installed in site_dir"
+    tinderbox_if_file Warning tinderbox-misplaced-doc.log "Misplaced documentation"
 
     tinderbox_if_file Notice tinderbox-scanelf-insecure.log "Insecure functions used"
     tinderbox_if_file Notice tinderbox-setXid-binaries.log "setXid files found"
