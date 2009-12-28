@@ -8,6 +8,8 @@ echo "$1 queued" | bti
 
 emerge --nospinner -1Du --keep-going --selective=n "$1" < /dev/null
 
+echo -5 | etc-update
+
 res=$?
 
 if [[ $res != 0 ]]; then
