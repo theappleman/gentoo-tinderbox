@@ -80,7 +80,7 @@ post_src_install() {
 	\( -path "${D}"usr/share/locale/\* -name '*.mo' \
 	   -fprintf "${T}"/tinderbox-locales.log "/%P\n" \) , \
 	\( \( -path "${D}"usr/lib\*/python\*/site-packages/\* -or \
-	      -path "${D}"usr/lib\*/ruby/site-ruby/\* -or \
+	      -path "${D}"usr/lib\*/ruby\*/site_ruby/\* -or \
 	      -path "${D}"usr/lib\*/perl5/\* -or \
 	      -path "${D}"lib\*/security/\* \) -name '*.la' \
 	      -fprintf "${T}"/tinderbox-pointless-la.log "/%P\n" \)
