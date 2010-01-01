@@ -4,9 +4,15 @@ reset_emergelog() {
     rm -f /var/log/emerge.log
 }
 
+dent() {
+    # Ignore failure that might be caused by network being
+    # unavailable, the service being unavailable or things like those.
+    echo "$@" | bti || true
+}
+
 set -e
 
-echo "#syncing anew upon request" | bti
+dent "#syncing anew upon request"
 
 emerge --sync
 
@@ -28,7 +34,7 @@ reset_emergelog
 if emerge -u1 ghc haskell-updater &&
     fgrep -q '>>> emerge' /var/log/emerge.log; then
 
-    echo "running #haskell-updater" | bti
+    dent "running #haskell-updater"
     /usr/sbin/haskell-updater --upgrade
 fi
 
@@ -37,7 +43,7 @@ reset_emergelog
 if emerge -u1 dev-lang/ocaml &&
     fgrep -q '>>> emerge' /var/log/emerge.log; then
 
-    echo "running #ocaml-rebuild" | bti
+    dent "running #ocaml-rebuild"
     /usr/sbin/ocaml-rebuild.sh -f
 fi
 
