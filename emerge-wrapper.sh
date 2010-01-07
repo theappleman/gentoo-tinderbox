@@ -8,9 +8,9 @@ echo "$1 queued" | bti
 
 emerge --nospinner -1Du --keep-going --selective=n "$1" < /dev/null
 
-echo -5 | etc-update
-
 res=$?
+
+echo -5 | etc-update
 
 if [[ $res != 0 ]]; then
     if ! fgrep -q ">>> emerge" /var/log/emerge.log; then
