@@ -1,11 +1,11 @@
 # -*- sh -*-
 
-tweet_me() {
+dent_me() {
     echo "$@" | bti --host "${BTI_HOST}" --account "${BTI_ACCOUNT}" --password "${BTI_PASSWORD}" >/dev/null
 }
 
 pre_pkg_setup() {
-    tweet_me "${CATEGORY}/${PF} merge starting"
+    dent_me "${CATEGORY}/${PF} merge starting"
 
     register_die_hook tinderbox_mask_pkg
     register_success_hook tinderbox_success
@@ -22,12 +22,12 @@ tinderbox_stats() {
 }
 
 tinderbox_success() {
-    tweet_me "${CATEGORY}/${PF} merge #succeded$(tinderbox_stats)"
+    dent_me "${CATEGORY}/${PF} merge #succeded$(tinderbox_stats)"
 }
 
 tinderbox_mask_pkg() {
     [[ ${EBUILD_PHASE} == test ]] && return 0
-    tweet_me "${CATEGORY}/${PF} merge #failed$(tinderbox_stats)"
+    dent_me "${CATEGORY}/${PF} merge #failed$(tinderbox_stats)"
     SANDBOX_ON=0 sed -i -e "\$a =${CATEGORY}/${PF}" /etc/portage/package.mask/currentrun
 }
 
