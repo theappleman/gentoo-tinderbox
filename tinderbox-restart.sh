@@ -1,5 +1,7 @@
 #!/bin/sh
 
+mkdir -p /var/cache/tinderbox
+
 reset_emergelog() {
     rm -f /var/log/emerge.log
 }
@@ -50,3 +52,17 @@ fi
 emerge -u1 glibc bti screen avahi nfs-utils gentoolkit java-dep-check portage-utils
 
 reset_emergelog
+
+# Generate a new complete list, this will also produce the list of new
+# dependencies to satisfy.
+./tinderbox.py > /var/cache/tinderbox/list-complete
+
+# Launch the fetch operation in background, saving the log (of both
+# good results and failures).
+nohup xargs -a /var/cache/tinderbox/list-complete emerge -fO --keep-going &> /var/log/tinderbox-fetch.log &
+
+# Now replace the old queue with a new one, skipping everything that
+# we wouldn't otherwise be merging (packages masked, removed, and
+# similar).
+mv /var/cache/tinderbox/queue /var/cache/tinderbox/queue.old
+sort /var/cache/tinderbox/queue.old /var/cache/tinderbox/list-complete | uniq -d | sort -R > /var/cache/tinderbox/queue
