@@ -50,6 +50,22 @@ if emerge -u1 dev-lang/ocaml &&
     /usr/sbin/ocaml-rebuild.sh -f
 fi
 
+reset_emergelog
+
+if emerge -u1 sys-kernel/gentoo-sources &&
+    fgrep -q '>>> emerge' /var/log/emerge.log; then
+
+    dent "new #gentoo-sources, making oldconfig"
+    cp -l /usr/src/config /usr/src/linux/.config
+
+    pushd /usr/src/linux
+        make -j14 oldconfig && \
+            make -j14 prepare modules_prepare
+    popd
+
+    emerge -P gentoo-sources
+fi
+
 emerge -u1 glibc bti screen avahi nfs-utils gentoolkit java-dep-check portage-utils
 
 reset_emergelog
