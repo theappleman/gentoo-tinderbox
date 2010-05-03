@@ -66,7 +66,7 @@ if emerge -u1 sys-kernel/gentoo-sources &&
     emerge -P gentoo-sources
 fi
 
-emerge -u1 glibc bti screen avahi nfs-utils gentoolkit java-dep-check portage-utils
+emerge -u1 glibc bti screen gentoolkit java-dep-check portage-utils
 
 reset_emergelog
 
