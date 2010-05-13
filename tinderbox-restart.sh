@@ -47,7 +47,8 @@ if emerge -u1 dev-lang/ocaml &&
     fgrep -q '>>> emerge' /var/log/emerge.log; then
 
     dent "running #ocaml-rebuild"
-    /usr/sbin/ocaml-rebuild.sh -f
+    # Don't fail if ocaml-rebuild fails, because of bug #319553
+    /usr/sbin/ocaml-rebuild.sh -f || true
 fi
 
 reset_emergelog
