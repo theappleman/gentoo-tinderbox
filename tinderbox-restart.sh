@@ -34,6 +34,15 @@ fi
 
 reset_emergelog
 
+if emerge -u1 perl-cleaner perl &&
+    fgrep -q '>>> emerge' /var/log/emerge.log; then
+
+    dent "running per-cleaner"
+    perl-cleaner --all
+fi
+
+reset_emergelog
+
 if emerge -u1 ghc haskell-updater &&
     fgrep -q '>>> emerge' /var/log/emerge.log; then
 
