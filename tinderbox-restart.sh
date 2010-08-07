@@ -81,8 +81,9 @@ emerge -u1 glibc bti screen gentoolkit java-dep-check portage-utils
 reset_emergelog
 
 # Generate a new complete list, this will also produce the list of new
-# dependencies to satisfy.
-./tinderbox.py > /var/cache/tinderbox/list-complete
+# dependencies to satisfy. Ignore new-style virtuals, leave them to be
+# merged out of dependencies.
+./tinderbox.py | egrep -v '^virtual/' > /var/cache/tinderbox/list-complete
 
 # Launch the fetch operation in background, saving the log (of both
 # good results and failures).
