@@ -4,7 +4,10 @@ if [[ -f /var/log/emerge.log ]]; then
     rm -f /var/log/emerge.log
 fi
 
-echo "$1 queued" | bti
+# Don't tweet this away if we're running a non-test try
+if [[ -z "${FEATURES}" ]]; then
+    echo "$1 queued" | bti;
+fi
 
 emerge --nospinner -1Du --keep-going --selective=n "$1" < /dev/null
 
