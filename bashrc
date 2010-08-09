@@ -101,6 +101,14 @@ post_src_install() {
     tinderbox_if_file Notice tinderbox-scanelf-insecure.log "Insecure functions used"
     tinderbox_if_file Notice tinderbox-setXid-binaries.log "setXid files found"
 
+    ebegin "Gentoo contact information"
+    xmlstarlet sel \
+        -t -o 'herds:' \
+        -o "    " -m '/pkgmetadata/herd' -v . -n \
+        -t -o 'maintainers:' \
+        -o "    " -m '/pkgmetadata/maintainer' -v email -n \
+        "${PORTDIR}/${CATEGORY}/${PN}/metadata.xml"
+
     lafilefixer "${D}"
 }
 
