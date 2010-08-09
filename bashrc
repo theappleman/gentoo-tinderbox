@@ -104,9 +104,9 @@ post_src_install() {
     ebegin "Gentoo contact information"
     xmlstarlet sel \
         -t -o 'herds:' -n \
-        -o "    " -m '/pkgmetadata/herd' -v . -n \
+        -m -o "    " '/pkgmetadata/herd' -v . -n \
         -t -o 'maintainers:' -n \
-        -o "    " -m '/pkgmetadata/maintainer' -v email -n \
+        -m -o "    " '/pkgmetadata/maintainer' -v email -n \
         "${PORTDIR}/${CATEGORY}/${PN}/metadata.xml"
 
     lafilefixer "${D}"
