@@ -8,9 +8,9 @@ metadata_print() {
     ebegin "Gentoo contact information"
     xmlstarlet sel \
         -t -o 'herds:' -n \
-        -m -o "    " '/pkgmetadata/herd' -v . -n \
+        -m '/pkgmetadata/herd' -o "    " -v . -n \
         -t -o 'maintainers:' -n \
-        -m -o "    " '/pkgmetadata/maintainer' -v email -n \
+        -m '/pkgmetadata/maintainer' -o "    " -v email -n \
         "${PORTDIR}/${CATEGORY}/${PN}/metadata.xml"
 
 }
