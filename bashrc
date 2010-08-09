@@ -4,6 +4,17 @@ dent_me() {
     echo "$@" | bti --host "${BTI_HOST}" --account "${BTI_ACCOUNT}" --password "${BTI_PASSWORD}" >/dev/null
 }
 
+metadata_print() {
+    ebegin "Gentoo contact information"
+    xmlstarlet sel \
+        -t -o 'herds:' -n \
+        -m -o "    " '/pkgmetadata/herd' -v . -n \
+        -t -o 'maintainers:' -n \
+        -m -o "    " '/pkgmetadata/maintainer' -v email -n \
+        "${PORTDIR}/${CATEGORY}/${PN}/metadata.xml"
+
+}
+
 pre_pkg_setup() {
     dent_me "${CATEGORY}/${PF} merge starting"
 
@@ -23,12 +34,16 @@ tinderbox_stats() {
 
 tinderbox_success() {
     dent_me "${CATEGORY}/${PF} merge #succeded$(tinderbox_stats)"
+
+    metadata_print
 }
 
 tinderbox_mask_pkg() {
     [[ ${EBUILD_PHASE} == test ]] && return 0
     dent_me "${CATEGORY}/${PF} merge #failed$(tinderbox_stats)"
     SANDBOX_ON=0 sed -i -e "\$a =${CATEGORY}/${PF}" /etc/portage/package.mask/currentrun
+
+    metadata_print
 }
 
 tinderbox_if_file() {
@@ -100,14 +115,6 @@ post_src_install() {
 
     tinderbox_if_file Notice tinderbox-scanelf-insecure.log "Insecure functions used"
     tinderbox_if_file Notice tinderbox-setXid-binaries.log "setXid files found"
-
-    ebegin "Gentoo contact information"
-    xmlstarlet sel \
-        -t -o 'herds:' -n \
-        -m -o "    " '/pkgmetadata/herd' -v . -n \
-        -t -o 'maintainers:' -n \
-        -m -o "    " '/pkgmetadata/maintainer' -v email -n \
-        "${PORTDIR}/${CATEGORY}/${PN}/metadata.xml"
 
     lafilefixer "${D}"
 }
