@@ -83,7 +83,10 @@ post_src_install() {
 	\( \( -path "${D}"usr/man/\* -or -path "${D}"usr/info/\* -or \
 	      -path "${D}"usr/X11R6/\* -or \
 	      -path "${D}"usr/locale/\* -or \
-	      -path "${D}"usr/local/\* \
+	      -path "${D}"usr/local/\* -or \
+              -path "${D}"var/lock\* -or \
+              -path "${D}"var/run/\* -or \
+              -path "${D}"dev/\* \
 	   \) -fprintf "${T}"/tinderbox-invalid-directory.log "/%P\n" \) , \
 	\( -path "${D}"usr/lib/perl5/site_perl/\* \
 	   -fprintf "${T}"/tinderbox-site-perl.log "/%P\n" \) , \
