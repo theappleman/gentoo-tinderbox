@@ -71,6 +71,10 @@ post_src_install() {
 	scanelf -qRs -$symbol "${D}" >> "${T}"/tinderbox-scanelf-insecure.log
     done
 
+    for symbolre in S_IS 'G[TD]K_'; do
+        scanelf -qRgs "-^${symbolre}*" "${D}" >> "${T}"/tinderbox-scanelf-badsymbols.log
+    done
+
     scanelf -R "${D}"/usr/share > "${T}"/tinderbox-share-elfs.log
 
     if has binchecks ${RESTRICT}; then
@@ -107,6 +111,7 @@ post_src_install() {
 	eqawarn "Tinderbox QA Warning: No locales installed (bug #264114)"
     fi
 
+    tinderbox_if_file Warning tinderbox-scanelf-badsymbols.log "Bad undefined symbol (glibc-2.12, gtk+-2.20 errors)"
     tinderbox_if_file Warning tinderbox-scanelf-bundled.log "Possibly bundled libraries"
     tinderbox_if_file Warning tinderbox-invalid-directory.log "Invalid directories in image"
     tinderbox_if_file Warning tinderbox-osx-forkfile.log "OSX fork files found (._*)"
