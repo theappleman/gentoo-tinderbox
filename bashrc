@@ -135,3 +135,7 @@ make() {
         emake "$@"
     fi
 }
+
+preserve_old_lib() {
+    ewarn "Preserved libs are disabled in tinderbox. Shush, go away!"
+}
