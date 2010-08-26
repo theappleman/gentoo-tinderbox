@@ -2,7 +2,7 @@
 
 seconds_per_week = 7 * 24 * 60 * 60
 # reinstall_period = None
-reinstall_period = 10 * seconds_per_week
+reinstall_period = 5 * seconds_per_week
 
 import os
 import sys
