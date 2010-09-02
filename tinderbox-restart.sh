@@ -9,7 +9,7 @@ reset_emergelog() {
 dent() {
     # Ignore failure that might be caused by network being
     # unavailable, the service being unavailable or things like those.
-    echo "$@" | bti || true
+    echo "$@" | bti --background || true
 }
 
 set -e

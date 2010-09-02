@@ -6,7 +6,7 @@ fi
 
 # Don't tweet this away if we're running a non-test try
 if [[ -z "${FEATURES}" ]]; then
-    echo "$1 queued" | bti;
+    echo "$1 queued" | bti --background;
 fi
 
 emerge --nospinner -1Du --keep-going --selective=n "$1" < /dev/null
@@ -28,7 +28,7 @@ if [[ $res != 0 ]]; then
 	    # This only hits the second time, so we're safely assuming
 	    # that the package will reject to be merged as it is, why,
 	    # we'll have to check.
-	    echo "$1 merge #rejected" | bti
+	    echo "$1 merge #rejected" | bti --background
 	fi
     fi
 fi
