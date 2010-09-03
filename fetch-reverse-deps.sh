@@ -16,8 +16,9 @@
 # SOFTWARE.
 
 (
+    source /etc/make.tinderbox.private.conf
     for atom in $@; do
-        wget -q -O- http://tinderbox.dev.gentoo.org/misc/{r,d}index/${atom}
+        curl --fail ${TINDERBOX_PROXY+--proxy ${TINDERBOX_PROXY}} http://tinderbox.dev.gentoo.org/misc/{r,d}index/${atom}
     done
 ) | egrep -v '^\[B\]' | sort -u | \
     xargs -n1 qatom | \
