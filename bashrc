@@ -17,7 +17,7 @@
 # SOFTWARE.
 
 dent_me() {
-    echo "$@" | bti ${BTI_PROXY:+--proxy "${BTI_PROXY}"} --host "${BTI_HOST}" --account "${BTI_ACCOUNT}" --password "${BTI_PASSWORD}" >/dev/null
+    echo "$@" | bti ${TINDERBOX_PROXY:+--proxy "${TINDERBOX_PROXY}"} --host "${BTI_HOST}" --account "${BTI_ACCOUNT}" --password "${BTI_PASSWORD}" >/dev/null
 }
 
 metadata_print() {
