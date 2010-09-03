@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
 # Copyright © 2008-2010 Zac Medico <zmedico@gentoo.org>
 # Copyright © 2008-2010 Diego Elio Pettenò <flameeyes@gentoo.org>
