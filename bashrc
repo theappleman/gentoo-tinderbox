@@ -20,17 +20,6 @@ dent_me() {
     echo "$@" | bti ${TINDERBOX_PROXY:+--proxy "${TINDERBOX_PROXY}"} --host "${BTI_HOST}" --account "${BTI_ACCOUNT}" --password "${BTI_PASSWORD}" --background
 }
 
-metadata_print() {
-    ebegin "Gentoo contact information"
-    xmlstarlet sel \
-        -t -o 'herds:' -n \
-        -m '/pkgmetadata/herd' -o "    " -v . -n \
-        -t -o 'maintainers:' -n \
-        -m '/pkgmetadata/maintainer' -o "    " -v email -n \
-        "${PORTDIR}/${CATEGORY}/${PN}/metadata.xml"
-
-}
-
 pre_pkg_setup() {
     dent_me "${CATEGORY}/${PF} merge starting"
 
@@ -50,16 +39,12 @@ tinderbox_stats() {
 
 tinderbox_success() {
     dent_me "${CATEGORY}/${PF} merge #succeded$(tinderbox_stats)"
-
-    metadata_print
 }
 
 tinderbox_mask_pkg() {
     [[ ${EBUILD_PHASE} == test ]] && return 0
     dent_me "${CATEGORY}/${PF} merge #failed$(tinderbox_stats)"
     SANDBOX_ON=0 sed -i -e "\$a =${CATEGORY}/${PF}" /etc/portage/package.mask/currentrun
-
-    metadata_print
 }
 
 tinderbox_if_file() {
