@@ -42,7 +42,7 @@ reset_emergelog
 emerge -u1 portage
 
 emerge -u1 gcc
-if fgrep -q '>>> emerge' /var/log/emerge.log; then
+if fgrep -q '>>> emerge' /var/log/emerge.log && gcc-config -l | tail -n 1 | grep -v asneeded; then
     ./update-gcc-asneeded.sh
     exit 0
 fi
