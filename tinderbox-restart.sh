@@ -53,7 +53,7 @@ if emerge -u1 perl-cleaner perl &&
     fgrep -q '>>> emerge' /var/log/emerge.log; then
 
     dent "running per-cleaner"
-    perl-cleaner --all
+    perl-cleaner --all -- --keep-going
 fi
 
 reset_emergelog
