@@ -17,8 +17,15 @@
 
 tboxdir=$(dirname $0)
 
+echo > /etc/portage/package.mask/currentsession
+
 until [ -f /var/run/tinderbox.pleasestop ]; do
     ${tboxdir}/tinderbox-restart.sh
 
-    head -n 200 /var/cache/tinderbox/queue | xargs -n1 ${tboxdir}/emerge-wrapper.sh
+    sort -R /var/cache/tinderbox/list-complete | head -n 200 | xargs -n1 ${tboxdir}/emerge-wrapper.sh
+
+    # before restarting, copy the current run's mask into the session
+    # mask; rinse and repeat. This should achieve something much more
+    # similar to what I did by hand before.
+    cat /etc/portage/package.mask/currentrun >> /etc/portage/package.mask/currentsession
 done
