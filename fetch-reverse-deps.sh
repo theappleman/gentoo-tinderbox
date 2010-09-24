@@ -15,13 +15,34 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 # SOFTWARE.
 
-(
-    source /etc/make.tinderbox.private.conf
-    for atom in $@; do
-        curl --fail ${TINDERBOX_PROXY+--proxy ${TINDERBOX_PROXY}} http://tinderbox.dev.gentoo.org/misc/{r,d}index/${atom}
-    done
-) | egrep -v '^\[B\]' | sort -u | \
-    xargs -n1 qatom | \
-    cut -d ' ' -f 1-2 | \
-    tr ' ' '/' | \
-    uniq
+DEPTH=${DEPTH:-1}
+
+script="$0"
+
+source /etc/make.tinderbox.private.conf
+
+fetchrevdeps() {
+    curl --fail ${TINDERBOX_PROXY+--proxy ${TINDERBOX_PROXY}} http://tinderbox.dev.gentoo.org/misc/{r,d}index/$1 2>/dev/null
+}
+
+filterrevdeps() {
+    egrep -v '^\[B\]' | sort -u | \
+        xargs -r -n1 qatom | \
+        cut -d ' ' -f 1-2 | \
+        tr ' ' '/' | \
+        uniq | tee
+}
+
+moreornot() {
+    if [ ${DEPTH} -gt 1 ]; then
+        DEPTH=$((${DEPTH}-1))
+        xargs "$script"
+    else
+        cat -
+    fi
+}
+
+for atom in "$@"; do
+    echo $atom
+    fetchrevdeps $atom
+done | filterrevdeps | moreornot
