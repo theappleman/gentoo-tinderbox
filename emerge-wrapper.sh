@@ -24,7 +24,7 @@ if [[ -z "${FEATURES}" ]]; then
     echo "$1 queued" | bti --background;
 fi
 
-emerge --nospinner -1Du --keep-going --selective=n "$1" < /dev/null
+emerge --nospinner -1Du --newuse --keep-going --selective=n "$1" < /dev/null
 
 res=$?
 
