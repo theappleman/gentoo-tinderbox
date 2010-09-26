@@ -15,6 +15,8 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 # SOFTWARE.
 
+tboxdir=$(dirname $0)
+
 mkdir -p /var/cache/tinderbox
 
 reset_emergelog() {
@@ -35,7 +37,7 @@ emerge --sync
 
 echo > /etc/portage/package.mask/currentrun
 
-./unavailable_installed.py | xargs -r emerge -C
+${tboxdir}/unavailable_installed.py | xargs -r emerge -C
 
 reset_emergelog
 
@@ -43,7 +45,7 @@ emerge -u1 portage
 
 emerge -u1 gcc
 if fgrep -q '>>> emerge' /var/log/emerge.log && gcc-config -l | tail -n 1 | grep -v asneeded; then
-    ./update-gcc-asneeded.sh
+    ${tboxdir}/update-gcc-asneeded.sh
     exit 0
 fi
 
@@ -100,7 +102,7 @@ reset_emergelog
 # Generate a new complete list, this will also produce the list of new
 # dependencies to satisfy. Ignore new-style virtuals, leave them to be
 # merged out of dependencies.
-./tinderbox.py | egrep -v '^virtual/' > /var/cache/tinderbox/list-complete
+${tboxdir}/tinderbox.py | egrep -v '^virtual/' > /var/cache/tinderbox/list-complete
 
 # Launch the fetch operation in background, saving the log (of both
 # good results and failures).
