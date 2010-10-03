@@ -124,8 +124,6 @@ post_src_install() {
 
     tinderbox_if_file Notice tinderbox-scanelf-insecure.log "Insecure functions used"
     tinderbox_if_file Notice tinderbox-setXid-binaries.log "setXid files found"
-
-    lafilefixer "${D}"
 }
 
 make() {
