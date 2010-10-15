@@ -19,9 +19,19 @@ if [[ -f /var/log/emerge.log ]]; then
     rm -f /var/log/emerge.log
 fi
 
+source /etc/make.tinderbox.private.conf
+
+if [[ -n ${BTI_ACCOUNT} ]]; then
+    dent_me() {
+        echo "$@" | bti ${TINDERBOX_PROXY:+--proxy "${TINDERBOX_PROXY}"} --host "${BTI_HOST}" --account "${BTI_ACCOUNT}" --password "${BTI_PASSWORD}" --background
+    }
+else
+    dent_me() { :; }
+fi
+
 # Don't tweet this away if we're running a non-test try
 if [[ -z "${FEATURES}" ]]; then
-    echo "$1 queued" | bti --background;
+    dent_me "$1 queued"
 fi
 
 emerge --nospinner --oneshot --deep --update --keep-going --selective=n "$1" < /dev/null
@@ -43,7 +53,7 @@ if [[ $res != 0 ]]; then
 	    # This only hits the second time, so we're safely assuming
 	    # that the package will reject to be merged as it is, why,
 	    # we'll have to check.
-	    echo "$1 merge #rejected" | bti --background
+	    dent_me "$1 merge #rejected"
 	fi
     fi
 fi

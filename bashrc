@@ -16,9 +16,13 @@
 # ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 # SOFTWARE.
 
-dent_me() {
-    echo "$@" | bti ${TINDERBOX_PROXY:+--proxy "${TINDERBOX_PROXY}"} --host "${BTI_HOST}" --account "${BTI_ACCOUNT}" --password "${BTI_PASSWORD}" --background
-}
+if [[ -n ${BTI_ACCOUNT} ]]; then
+    dent_me() {
+        echo "$@" | bti ${TINDERBOX_PROXY:+--proxy "${TINDERBOX_PROXY}"} --host "${BTI_HOST}" --account "${BTI_ACCOUNT}" --password "${BTI_PASSWORD}" --background
+    }
+else
+    dent_me() { :; }
+fi
 
 pre_pkg_setup() {
     dent_me "${CATEGORY}/${PF} merge starting"
