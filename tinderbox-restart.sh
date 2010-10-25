@@ -110,7 +110,7 @@ ${tboxdir}/tinderbox.py | egrep -v '^virtual/' > /var/cache/tinderbox/list-compl
 
 # Launch the fetch operation in background, saving the log (of both
 # good results and failures).
-nohup xargs -a /var/cache/tinderbox/list-complete emerge -fO --keep-going &> /var/log/tinderbox-fetch.log &
+nohup xargs -a /var/cache/tinderbox/list-complete emerge -FO --keep-going &> /var/log/tinderbox-fetch.log &
 
 # Now replace the old queue with a new one, skipping everything that
 # we wouldn't otherwise be merging (packages masked, removed, and
