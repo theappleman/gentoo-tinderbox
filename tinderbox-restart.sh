@@ -83,13 +83,13 @@ fi
 
 reset_emergelog
 
-cp /usr/src/linux/.config /usr/src/config
+[[ -f /usr/src/linux/.config ]] && cp /usr/src/linux/.config /usr/src/config
 
 if emerge -u1 sys-kernel/gentoo-sources &&
     fgrep -q '>>> emerge' /var/log/emerge.log; then
 
     dent_me "new #gentoo-sources, making oldconfig"
-    cp /usr/src/config /usr/src/linux/.config
+    [[ -f /usr/src/config ]] && cp /usr/src/config /usr/src/linux/.config
 
     pushd /usr/src/linux
         make -j14 oldconfig && \
