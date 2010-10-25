@@ -28,6 +28,8 @@ until [ -f /var/run/tinderbox.pleasestop ]; do
     cp ${list} ${list}~
     cat ${list}~ /var/cache/tinderbox/myrunlist | sort | uniq -u > ${list}
 
+    [ -s /var/cache/tinderbox/myrunlist ] || break
+
     xargs -a /var/cache/tinderbox/myrunlist -n1 ${tboxdir}/emerge-wrapper.sh
 
     # before restarting, copy the current run's mask into the session
