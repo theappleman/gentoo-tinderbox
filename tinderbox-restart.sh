@@ -92,7 +92,7 @@ if emerge -u1 sys-kernel/gentoo-sources &&
     [[ -f /usr/src/config ]] && cp /usr/src/config /usr/src/linux/.config
 
     pushd /usr/src/linux
-        make -j14 oldconfig && \
+        yes '' | make -j14 oldconfig && \
             make -j14 prepare modules_prepare
     popd
 
