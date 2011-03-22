@@ -22,7 +22,7 @@ script="$0"
 source /etc/make.tinderbox.private.conf
 
 fetchrevdeps() {
-    curl --fail ${TINDERBOX_PROXY+--proxy ${TINDERBOX_PROXY}} http://tinderbox.dev.gentoo.org/misc/{r,d}index/$1 2>/dev/null
+    curl --fail ${TINDERBOX_PROXY+--proxy ${TINDERBOX_PROXY}} http://qa-reports.gentoo.org/output/genrdeps/{r,d}index/$1 2>/dev/null
 }
 
 filterrevdeps() {
