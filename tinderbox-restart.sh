@@ -45,9 +45,9 @@ ${tboxdir}/unavailable_installed.py | xargs -r emerge -C
 
 reset_emergelog
 
-emerge -u1 portage
+emerge -u1 sys-apps/portage
 
-emerge -u1 gcc
+emerge -u1 sys-devel/gcc
 if fgrep -q '>>> emerge' /var/log/emerge.log && gcc-config -l | tail -n 1 | grep -v asneeded; then
     ${tboxdir}/update-gcc-asneeded.sh
     exit 0
@@ -55,7 +55,7 @@ fi
 
 reset_emergelog
 
-if emerge -u1 perl-cleaner perl &&
+if emerge -u1 app-admin/perl-cleaner perl &&
     fgrep -q '>>> emerge' /var/log/emerge.log; then
 
     dent_me "running per-cleaner"
@@ -64,7 +64,7 @@ fi
 
 reset_emergelog
 
-if emerge -u1 ghc haskell-updater &&
+if emerge -u1 dev-lang/ghc app-admin/haskell-updater &&
     fgrep -q '>>> emerge' /var/log/emerge.log; then
 
     dent_me "running #haskell-updater"
@@ -96,10 +96,16 @@ if emerge -u1 sys-kernel/gentoo-sources &&
             make -j14 prepare modules_prepare
     popd
 
-    emerge -P gentoo-sources
+    emerge -P sys-kernel/gentoo-sources
 fi
 
-emerge -u1 glibc bti screen gentoolkit java-dep-check portage-utils
+emerge -u1 \
+    sys-libs/glibc \
+    net-misc/bti \
+    app-misc/screen \
+    app-portage/gentoolkit \
+    dev-java/java-dep-check \
+    app-portage/portage-utils
 
 reset_emergelog
 
