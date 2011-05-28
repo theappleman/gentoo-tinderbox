@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/bash -l
+
+source /etc/profile
 
 screen -S tinderbox -d -m
 
