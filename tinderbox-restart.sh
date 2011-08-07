@@ -112,7 +112,7 @@ reset_emergelog
 # Generate a new complete list, this will also produce the list of new
 # dependencies to satisfy. Ignore new-style virtuals, leave them to be
 # merged out of dependencies.
-${tboxdir}/tinderbox.py | egrep -v '^virtual/' > /var/cache/tinderbox/list-complete
+${tboxdir}/tinderbox.py 2> /var/cache/tinderbox/use-conflicts | egrep -v '^virtual/' > /var/cache/tinderbox/list-complete
 
 # Launch the fetch operation in background, saving the log (of both
 # good results and failures).
