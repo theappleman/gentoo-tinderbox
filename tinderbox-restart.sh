@@ -105,7 +105,8 @@ emerge -u \
     app-misc/screen \
     app-portage/gentoolkit \
     dev-java/java-dep-check \
-    app-portage/portage-utils
+    app-portage/portage-utils \
+    dev-lang/python:2.7
 
 reset_emergelog
 
