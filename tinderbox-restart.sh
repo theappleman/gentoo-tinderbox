@@ -99,7 +99,7 @@ if emerge -u1 sys-kernel/gentoo-sources &&
     emerge -P sys-kernel/gentoo-sources
 fi
 
-emerge -u1 \
+emerge -u \
     sys-libs/glibc \
     net-misc/bti \
     app-misc/screen \
