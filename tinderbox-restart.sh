@@ -110,6 +110,10 @@ emerge -u \
 
 reset_emergelog
 
+# set the default Python interpreter to Python 2.7. The tinderbox is
+# experimental, but not crazy.
+eselect python set python2.7 || exit 1
+
 # Generate a new complete list, this will also produce the list of new
 # dependencies to satisfy. Ignore new-style virtuals, leave them to be
 # merged out of dependencies.
