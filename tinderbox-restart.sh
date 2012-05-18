@@ -101,7 +101,7 @@ fi
 
 emerge -u \
     sys-libs/glibc \
-    net-misc/bti \
+    $([[ -n ${BTI_ACCOUNT} ]] && echo net-misc/bti) \
     app-misc/screen \
     app-portage/gentoolkit \
     dev-java/java-dep-check \
