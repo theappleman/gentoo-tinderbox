@@ -1,0 +1,18 @@
+# Tinderbox Install
+
+1. Setup a fresh Gentoo system
+2. Create some directories:
+   * /etc/portage/package.mask
+   * /var/cache/tinderbox
+   * /var/...
+3. Copy make.tinderbox.conf and bashrc to /etc/portage
+4. cd /root; git clone git://git.overlays.gentoo.org/proj/flameeyes-tinderbox.git tinderbox
+5. ./tinderbox-continuous.sh
+
+# make.tinderbox.conf
+SYNC, EMERGE_DEFAULT_OPTS, MAKEOPTS
+
+# Unanswered Questions
+
+What is the queue?
+Where are the masks used?

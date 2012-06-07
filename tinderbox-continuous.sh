@@ -21,12 +21,16 @@ list=${1-/var/cache/tinderbox/list-complete}
 
 echo > /etc/portage/package.mask/currentsession
 
+test -f /var/run/tinderbox.pleasestop && rm /var/run/tinderbox.pleasestop
+
 until [ -f /var/run/tinderbox.pleasestop ]; do
     ${tboxdir}/tinderbox-restart.sh
 
     sort -R ${list} | head -n 200 > /var/cache/tinderbox/myrunlist
-    cp ${list} ${list}~
-    cat ${list}~ /var/cache/tinderbox/myrunlist | sort | uniq -u > ${list}
+
+    # I don't see the point of this
+    #cp ${list} ${list}~
+    #cat ${list}~ /var/cache/tinderbox/myrunlist | sort | uniq -u > ${list}
 
     [ -s /var/cache/tinderbox/myrunlist ] || break
 
@@ -37,3 +41,5 @@ until [ -f /var/run/tinderbox.pleasestop ]; do
     # similar to what I did by hand before.
     cat /etc/portage/package.mask/currentrun >> /etc/portage/package.mask/currentsession
 done
+
+rm /var/run/tinderbox.pleasestop

@@ -23,7 +23,7 @@ reset_emergelog() {
     rm -f /var/log/emerge.log
 }
 
-source /etc/portage/make.tinderbox.private.conf
+source /etc/portage/make.tinderbox.conf
 
 if [[ -n ${BTI_ACCOUNT} ]]; then
     dent_me() {
@@ -34,6 +34,10 @@ else
 fi
 
 set -e
+
+# set the default Python interpreter to Python 2.7. The tinderbox is
+# experimental, but not crazy.
+eselect python set python2.7 || exit 1
 
 dent_me "#syncing anew upon request"
 
@@ -109,10 +113,6 @@ emerge -u \
     dev-lang/python:2.7
 
 reset_emergelog
-
-# set the default Python interpreter to Python 2.7. The tinderbox is
-# experimental, but not crazy.
-eselect python set python2.7 || exit 1
 
 # Generate a new complete list, this will also produce the list of new
 # dependencies to satisfy. Ignore new-style virtuals, leave them to be

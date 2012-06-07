@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 #
 # Copyright © 2008-2010 Zac Medico <zmedico@gentoo.org>
