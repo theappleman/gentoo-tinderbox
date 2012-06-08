@@ -11,8 +11,3 @@
 
 # make.tinderbox.conf
 SYNC, EMERGE_DEFAULT_OPTS, MAKEOPTS
-
-# Unanswered Questions
-
-What is the queue?
-Where are the masks used?

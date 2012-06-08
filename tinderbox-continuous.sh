@@ -21,7 +21,10 @@ list=${1-/var/cache/tinderbox/list-complete}
 
 echo > /etc/portage/package.mask/currentsession
 
-test -f /var/run/tinderbox.pleasestop && rm /var/run/tinderbox.pleasestop
+while test -f /var/run/tinderbox.pleasestop; do
+	echo -ne 'sleeping...\r'
+	sleep 60
+done
 
 until [ -f /var/run/tinderbox.pleasestop ]; do
     ${tboxdir}/tinderbox-restart.sh
@@ -41,5 +44,3 @@ until [ -f /var/run/tinderbox.pleasestop ]; do
     # similar to what I did by hand before.
     cat /etc/portage/package.mask/currentrun >> /etc/portage/package.mask/currentsession
 done
-
-rm /var/run/tinderbox.pleasestop

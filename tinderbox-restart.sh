@@ -23,7 +23,7 @@ reset_emergelog() {
     rm -f /var/log/emerge.log
 }
 
-source /etc/portage/make.tinderbox.conf
+. /etc/portage/make.tinderbox.conf
 
 if [[ -n ${BTI_ACCOUNT} ]]; then
     dent_me() {
