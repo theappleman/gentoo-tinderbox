@@ -19,7 +19,7 @@ if [[ -f /var/log/emerge.log ]]; then
     rm -f /var/log/emerge.log
 fi
 
-. /etc/portage/make.tinderbox.conf
+source /etc/portage/make.tinderbox.conf
 
 if [[ -n ${BTI_ACCOUNT} ]]; then
     dent_me() {
