@@ -6,7 +6,7 @@ screen -S tinderbox -d -m
 
 screen -S tinderbox -X zombie kr
 
-screen -S tinderbox -X screen 1 tail -F /var/log/tinderbox-fetch.log
+#screen -S tinderbox -X screen 1 tail -F /var/log/tinderbox-fetch.log
 screen -S tinderbox -X screen 2 emerge --info
 
 screen -S tinderbox -p 0 -X kill
