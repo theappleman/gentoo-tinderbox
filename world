@@ -1,0 +1,7 @@
+app-misc/screen
+app-portage/gentoolkit
+app-portage/portage-utils
+dev-java/java-dep-check
+dev-lang/python:2.7
+net-analyzer/netcat6
+net-misc/curl
